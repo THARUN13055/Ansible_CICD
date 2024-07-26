@@ -1,0 +1,22 @@
+- name: Install docker 
+  ansible.buildin.apt:
+    - name: {{ item }}
+      with_items:
+        - docker.io
+
+- name: to build dockerfile
+  command: docker build -t {{ docker_username }}/{{ docker_imagename }}:{{ docker_image_tag }} ../../
+
+- name: docker login
+  docker_login: 
+    username: "{{ docker_username }}"
+    password: "{{ docker_password }}"
+  become: yes
+
+- name: docker push to dockerhub
+  command: docker push "{{ docker_username }}/{{ docker_imagename }}:{{ docker_image_tag }}"
+  become: yes
+
+- name: docker remove image
+  command: docker rmi -f "{{ docker_username }}/{{ docker_imagename }}:{{ docker_image_tag }}"
+  become: yes

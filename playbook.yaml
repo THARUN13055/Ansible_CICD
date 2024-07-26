@@ -1,0 +1,5 @@
+- name: Installation
+  hosts: localhost
+  become: root
+  tasks:
+    - include: /tasks/docker/docker.yaml
